@@ -1,0 +1,18 @@
+version: '3'
+services:
+  crawler_service:
+    build: ./crawler_service
+    tty: true
+    depends_on:
+      - rabbitmq_server
+    env_file:
+      - ./crawler_service/.env
+    volumes:
+      - "./crawler_service:/usr/src/app"
+
+  rabbitmq_server:
+    image: 'rabbitmq:3-management'
+    hostname: 'rabbitmq_server'
+    ports:
+      - '15672:15672'
+      - '5672:5672'
