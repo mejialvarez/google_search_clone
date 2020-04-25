@@ -15,9 +15,9 @@ class Producer:
       channel = self.connection.channel()
       channel.queue_declare(queue=self.queue)
       channel.basic_publish(exchange='', routing_key=self.queue, body=body)
-      print(' [x] Sent: {}'.format(body))
+      print('[Producer] Sent: {}'.format(body))
     except pika.exceptions.AMQPConnectionError:
-      print(' [x] Conection error for queue: {}'.format(self.queue))
+      print('[Producer] Conection error for queue: {}'.format(self.queue))
       self.publish(body)
 
 

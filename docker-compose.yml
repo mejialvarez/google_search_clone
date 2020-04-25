@@ -4,15 +4,50 @@ services:
     build: ./crawler_service
     tty: true
     depends_on:
-      - rabbitmq_server
+      - rabbitmq
+      - indexing_service
     env_file:
       - ./crawler_service/.env
     volumes:
       - "./crawler_service:/usr/src/app"
 
-  rabbitmq_server:
-    image: 'rabbitmq:3-management'
-    hostname: 'rabbitmq_server'
+  indexing_service:
+    build: ./indexing_service
+    command: npm start
     ports:
-      - '15672:15672'
-      - '5672:5672'
+      - 3000:8080
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+    env_file:
+      - ./indexing_service/.env
+    volumes:
+      - "./indexing_service:/usr/src/app"
+
+  indexing_worker:
+    build: ./indexing_service
+    command: npm run worker
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+    env_file:
+      - ./indexing_service/.env
+    volumes:
+      - "./indexing_service:/usr/src/app"
+
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    hostname: 'rabbitmq'
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
+      - 9300:9300
+      

@@ -14,7 +14,7 @@ class Consumer:
     channel.queue_declare(queue=self.queue)
     channel.basic_consume(queue=self.queue, on_message_callback=callback, auto_ack=True)
 
-    print(' [*] Waiting for messages. To exit press CTRL+C')
+    print('[Consumer] Waiting for messages. To exit press CTRL+C')
     channel.start_consuming()
 
   def set_connection(self):

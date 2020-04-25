@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from producer import Producer
 from crawler import Crawler
 
