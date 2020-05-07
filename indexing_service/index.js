@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 router.post('/indexing', pagesController.index)
-app.use(router)
+app.use('/v1', router)
 
 app.listen(config.port, config.host)
 console.log(`Running on http://${config.host}:${config.port}`)

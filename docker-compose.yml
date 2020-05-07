@@ -6,6 +6,7 @@ services:
     depends_on:
       - rabbitmq
       - indexing_service
+      - document_store_service
     env_file:
       - ./crawler_service/.env
     volumes:
@@ -35,6 +36,18 @@ services:
     volumes:
       - "./indexing_service:/usr/src/app"
 
+  document_store_service:
+    build: ./document_store_service
+    command: npm run dev
+    depends_on:
+      - dynamodb
+    ports:
+      - 3001:8081
+    env_file:
+      - ./document_store_service/.env
+    volumes:
+      - "./document_store_service:/usr/src/app"
+
   rabbitmq:
     image: 'rabbitmq:3-management'
     hostname: 'rabbitmq'
@@ -50,4 +63,11 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - 8000:8000
+    volumes:
+     - "/home/mejialvarez/projects/data:/home/dynamodblocal/data"
       

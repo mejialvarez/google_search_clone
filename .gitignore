@@ -1,6 +1,6 @@
 **/__pycache__
+*.pyc
 *.env
-.rabbitmq_env
 
 *package-lock.json
 **/node_modules

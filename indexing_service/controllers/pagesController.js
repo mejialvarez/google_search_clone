@@ -4,8 +4,8 @@ producer.connect()
 
 class PagesController {
   async index(req, res, next) {
-  	const { page_url } = req.body
-    producer.publish(page_url)
+    const { pageUrl } = req.body
+    producer.publish(pageUrl)
     res.status(201).send({ status: 'created' })
   }
 }

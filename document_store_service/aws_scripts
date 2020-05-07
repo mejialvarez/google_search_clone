@@ -1,0 +1,31 @@
+aws dynamodb create-table --table-name links \
+--attribute-definitions \
+  AttributeName=doc1Id,AttributeType=N \
+  AttributeName=doc2Id,AttributeType=N \
+--key-schema \
+  AttributeName=doc1Id,KeyType=HASH \
+  AttributeName=doc2Id,KeyType=RANGE \
+--provisioned-throughput \
+  ReadCapacityUnits=1,WriteCapacityUnits=1 \
+--endpoint-url http://localhost:8000
+
+aws dynamodb create-table --table-name documents \
+--attribute-definitions \
+  AttributeName=id,AttributeType=N \
+--key-schema \
+  AttributeName=id,KeyType=HASH \
+--provisioned-throughput \
+  ReadCapacityUnits=1,WriteCapacityUnits=1 \
+--endpoint-url http://localhost:8000
+
+aws dynamodb update-table \
+    --table-name documents \
+    --attribute-definitions AttributeName=pageUrl,AttributeType=S \
+    --global-secondary-index-updates \
+    "[{\"Create\":{\"IndexName\": \"pageUrlIndex\",\"KeySchema\":[{\"AttributeName\":\"pageUrl\",\"KeyType\":\"HASH\"}], \
+    \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 1, \"WriteCapacityUnits\": 1      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]" \
+    --endpoint-url http://localhost:8000
+
+aws dynamodb describe-table --table-name documents \
+--endpoint-url http://localhost:8000 | grep IndexStatus
+
