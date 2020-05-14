@@ -5,8 +5,9 @@ services:
     tty: true
     depends_on:
       - rabbitmq
-      - indexing_service
       - document_store_service
+      - indexing_service
+      - page_rank_service
     env_file:
       - ./crawler_service/.env
     volumes:
@@ -14,7 +15,7 @@ services:
 
   indexing_service:
     build: ./indexing_service
-    command: npm start
+    command: npm run dev
     ports:
       - 3000:8080
     depends_on:
@@ -47,6 +48,29 @@ services:
       - ./document_store_service/.env
     volumes:
       - "./document_store_service:/usr/src/app"
+
+  page_rank_service:
+    build: ./page_rank_service
+    command: npm run dev
+    ports:
+      - 3002:8082
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ./page_rank_service/.env
+    volumes:
+      - ./page_rank_service:/usr/src/app
+
+  page_rank_worker:
+    build: ./page_rank_service
+    command: npm run pageRankWorker
+    depends_on:
+      - document_store_service
+      - rabbitmq
+    env_file:
+      - ./page_rank_service/.env
+    volumes:
+      - ./page_rank_service:/usr/src/app
 
   rabbitmq:
     image: 'rabbitmq:3-management'

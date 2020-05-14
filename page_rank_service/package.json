@@ -1,0 +1,23 @@
+{
+  "name": "page_rank_worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "pageRankWorker": "NODE_ENV=production node workers/pageRankWorker.js"
+  },
+  "author": "Hamilton Alvarez",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.5.5",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

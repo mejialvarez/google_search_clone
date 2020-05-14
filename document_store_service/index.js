@@ -12,8 +12,11 @@ app.use(cors())
 
 router.post('/documents', documentsController.create)
 router.get('/documents/byUrl', documentsController.getByUrl)
+router.get('/documents/:id', documentsController.getById)
 router.put('/documents/:id/digest', documentsController.updateDigest)
-router.get('/documents/:id/outboundLinks', linksController.getOutboundLinks)
+router.put('/documents/:id/pageRank', documentsController.updatePageRank)
+router.get('/documents/:id/outboundDocuments', linksController.getOutboundDocuments)
+router.get('/documents/:id/inboundDocuments', linksController.getInboundDocuments)
 router.post('/links', linksController.create)
 app.use('/v1', router)
 

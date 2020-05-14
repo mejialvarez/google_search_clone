@@ -8,18 +8,29 @@ class LinksController {
       res.json({ status: 'created' })
     } catch(e) {
       console.error(e)
-     res.json( { status: 'error', message: e.message })
+      res.json( { status: 'error', message: e.message })
     }
   }
 
-  async getOutboundLinks(req, res) {
+  async getOutboundDocuments(req, res) {
     try {
       const docId = parseInt(req.params.id)
-      const outboundLinks = await linksService.getOutboundLinks(docId)
-      res.json({ links: outboundLinks })
+      const outboundDocuments = await linksService.getOutboundDocuments(docId)
+      res.json(outboundDocuments)
     } catch(e) {
       console.error(e)
-     res.json( { status: 'error', message: e.message })
+      res.json( { status: 'error', message: e.message })
+    }
+  }
+
+  async getInboundDocuments(req, res) {
+    try {
+      const docId = parseInt(req.params.id)
+      const inboundDocuments = await linksService.getInboundDocuments(docId)
+      res.json(inboundDocuments)
+    } catch(e) {
+      console.error(e)
+      res.json( { status: 'error', message: e.message })
     }
   }
 }
