@@ -11,7 +11,6 @@ app.use(bodyParser.json())
 app.use(cors())
 
 router.post('/documents', documentsController.create)
-router.get('/documents/byUrl', documentsController.getByUrl)
 router.get('/documents/:id', documentsController.getById)
 router.put('/documents/:id/digest', documentsController.updateDigest)
 router.put('/documents/:id/pageRank', documentsController.updatePageRank)

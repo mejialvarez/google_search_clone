@@ -4,8 +4,7 @@ class DocumentsController {
   async create(req, res) {
     try {
       const { pageUrl, digest } = req.body
-      const id = Math.floor(Math.random() * Math.floor(1000000));
-      const doc = await documentsService.create({ id, pageUrl, digest })
+      const doc = await documentsService.create({ pageUrl, digest })
       res.json(doc)
     } catch(e) {
       console.error(e)
@@ -15,19 +14,8 @@ class DocumentsController {
 
   async getById(req, res) {
     try {
-      const id = parseInt(req.params.id)
+      const id = req.params.id
       const doc = await documentsService.getById(id)
-      res.json(doc)
-    } catch(e) {
-      console.error(e)
-      res.json( { status: 'error', message: e.message })
-    }
-  }
-
-  async getByUrl(req, res) {
-    try {
-      const url = req.query.url
-      const doc = await documentsService.getByUrl(url)
       res.json(doc)
     } catch(e) {
       console.error(e)

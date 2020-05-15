@@ -8,7 +8,7 @@ from pagerank_client import PagerankClient
 from web_scraper import WebScraper
 
 class Crawler:
-  MAX_URL = 5
+  MAX_URL = 10
 
   def __init__(self):
     self.url_counter = 1

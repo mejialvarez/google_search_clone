@@ -92,6 +92,4 @@ services:
     image: amazon/dynamodb-local
     ports:
       - 8000:8000
-    volumes:
-     - "/home/mejialvarez/projects/data:/home/dynamodblocal/data"
       

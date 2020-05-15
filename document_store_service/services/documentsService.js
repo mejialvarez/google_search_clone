@@ -1,4 +1,5 @@
 const dynamodb = require('../config/dynamodb')
+const crypto = require('crypto')
 
 class DocumentsService {
   constructor() {
@@ -6,22 +7,10 @@ class DocumentsService {
   }
 
   async create({ pageUrl, digest }) {
-    const id = Math.floor(Math.random() * Math.floor(1000000));
+    const id =  crypto.createHash("sha256").update(pageUrl).digest("hex")
     const params = { TableName: this.tableName, Item: { id, pageUrl, pageRank: 1, digest } }
     await dynamodb.put(params).promise()
     return { id }
-  }
-
-  async getByUrl(url) {
-    const params = {
-      TableName: this.tableName,
-      IndexName: "pageUrlIndex",
-      KeyConditionExpression: "pageUrl = :pageUrl",
-      ExpressionAttributeValues: { ":pageUrl": url }
-    }
-
-    const docs = await dynamodb.query(params).promise()
-    return docs.Items[0] || {}
   }
 
   async getById(id) {
@@ -37,7 +26,7 @@ class DocumentsService {
   async updateDigest(id, digest) {
     const params = {
       TableName: this.tableName,
-      Key: { id: parseInt(id) },
+      Key: { id },
       UpdateExpression: "set digest = :d",
       ExpressionAttributeValues:{ ":d": digest }
     }
@@ -47,7 +36,7 @@ class DocumentsService {
   async updatePageRank(id, pageRank) {
     const params = {
       TableName: this.tableName,
-      Key: { id: parseInt(id) },
+      Key: { id },
       UpdateExpression: "set pageRank = :pageRank",
       ExpressionAttributeValues:{ ":pageRank": pageRank }
     }

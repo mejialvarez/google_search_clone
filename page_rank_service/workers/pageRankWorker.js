@@ -14,7 +14,7 @@ class PageRankWorker {
   }
 
   async updatePageRank(msg) {
-    const documentId = parseInt(msg.content)
+    const documentId = msg.content
     const inboundDocuments = await documentClient.getInboundDocuments(documentId)
     let pageRank = 0
 

@@ -14,7 +14,7 @@ class LinksController {
 
   async getOutboundDocuments(req, res) {
     try {
-      const docId = parseInt(req.params.id)
+      const docId = req.params.id
       const outboundDocuments = await linksService.getOutboundDocuments(docId)
       res.json(outboundDocuments)
     } catch(e) {
@@ -25,7 +25,7 @@ class LinksController {
 
   async getInboundDocuments(req, res) {
     try {
-      const docId = parseInt(req.params.id)
+      const docId = req.params.id
       const inboundDocuments = await linksService.getInboundDocuments(docId)
       res.json(inboundDocuments)
     } catch(e) {

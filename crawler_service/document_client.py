@@ -1,13 +1,16 @@
 import os
 import requests
-import json 
+import json
+import hashlib
 
 class DocumentClient:
   def __init__(self):
     self.uri = os.getenv('DOCUMENT_STORE_SERVICE_URL')
 
   def get_by_url(self, url):
-    endpoint = '{}/documents/byUrl?url={}'.format(self.uri, url)
+    hash_object = hashlib.sha256(url.encode('utf-8'))
+    doc_id = hash_object.hexdigest()
+    endpoint = '{}/documents/{}'.format(self.uri, doc_id)
     document = json.loads(requests.get(endpoint).content.decode('utf-8'))
     return document
 
