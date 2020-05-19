@@ -14,9 +14,9 @@ class DocumentClient:
     document = json.loads(requests.get(endpoint).content.decode('utf-8'))
     return document
 
-  def create(self, page_url, digest):
+  def create(self, url, digest):
     endpoint = '{}/documents'.format(self.uri)
-    payload = { 'pageUrl': page_url, 'digest': digest }
+    payload = { 'pageUrl': url, 'digest': digest }
     document = json.loads(requests.post(endpoint, json=payload).content.decode('utf-8'))
     return document
 

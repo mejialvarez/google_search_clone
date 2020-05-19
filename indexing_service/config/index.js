@@ -6,9 +6,6 @@ const config = {
   port: env.PORT,
   elasticsearch: {
     url: env.ELASTICSEARCH_URL
-  },
-  rabbitmq: {
-    url: env.RABBITMQ_URL
   }
 }
 

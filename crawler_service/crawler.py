@@ -22,22 +22,26 @@ class Crawler:
     self.consumer.subscribe(self.run_for_url)
 
   def run_for_url(self, ch, method, properties, body):
-    page_url = body.decode("utf-8")
-    print("[Crawler] Received %r" % page_url)
+    doc_url = body.decode("utf-8")
+    print("[Crawler] Received %r" % doc_url)
 
-    document_text = WebScraper.get_text(page_url)
-    document_links = WebScraper.get_links(page_url)
+    document_text = WebScraper.get_text(doc_url)
+    document_links = WebScraper.get_links(doc_url)
 
-    hash_object = hashlib.sha256(document_text)
+    hash_object = hashlib.sha256(document_text.encode("utf-8"))
     digest = hash_object.hexdigest()
-    doc_record = self.document_client.get_by_url(page_url)
 
-    if "id" in doc_record:
-      if doc_record["digest"] != digest:
-        self.document_client.update_digest(doc_record["id"], digest)
-    else:
-      doc_record = self.document_client.create(page_url, digest)
-      self.indexing_client.index(page_url)
+    doc_record = self.document_client.get_by_url(doc_url)
+    if "id" not in doc_record:
+      doc_record = self.document_client.create(doc_url, digest)
+
+    doc_indexed = self.indexing_client.get_by_id(doc_record["id"])
+    if "url" not in doc_indexed:
+      self.indexing_client.index(doc_record["id"], doc_url, document_text)
+
+    if doc_record["digest"] != digest:
+      self.document_client.update_digest(doc_record["id"], digest)
+      self.indexing_client.update_content(doc_record["id"], document_text)
 
     for link in document_links:
       if self.url_counter < Crawler.MAX_URL:

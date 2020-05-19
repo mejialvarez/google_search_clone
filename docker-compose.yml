@@ -19,18 +19,6 @@ services:
     ports:
       - 3000:8080
     depends_on:
-      - rabbitmq
-      - elasticsearch
-    env_file:
-      - ./indexing_service/.env
-    volumes:
-      - "./indexing_service:/usr/src/app"
-
-  indexing_worker:
-    build: ./indexing_service
-    command: npm run worker
-    depends_on:
-      - rabbitmq
       - elasticsearch
     env_file:
       - ./indexing_service/.env

@@ -16,7 +16,7 @@ class WebScraper:
       if t.parent.name not in tags_blacklist:
         document_text_sanitize += '{}'.format(t.replace("\n", " "))
 
-    document_text_sanitize = document_text_sanitize.encode('utf-8')
+    document_text_sanitize = document_text_sanitize
     return document_text_sanitize
 
   @classmethod
