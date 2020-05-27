@@ -10,7 +10,7 @@ class DocumentsService {
     const id =  crypto.createHash("sha256").update(pageUrl).digest("hex")
     const params = { TableName: this.tableName, Item: { id, pageUrl, pageRank: 1, digest } }
     await dynamodb.put(params).promise()
-    return { id }
+    return { id, pageUrl, pageRank: 1, digest }
   }
 
   async getById(id) {
